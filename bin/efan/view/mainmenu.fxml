@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="efan.controller.MainmenuController">
+   <children>
+      <Button layoutX="229.0" layoutY="200.0" mnemonicParsing="false" onAction="#showWithdraw" text="WITHDRAW">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="229.0" layoutY="271.0" mnemonicParsing="false" onAction="#showDeposit" prefHeight="39.0" prefWidth="142.0" text="DEPOSIT">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Label layoutX="226.0" layoutY="79.0" text="MAIN MENU">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToMain" text="back" />
+   </children>
+</AnchorPane>
