@@ -10,6 +10,15 @@
         "/home/efanfitriyan/Downloads/javafx-sdk-17.0.1/lib/javafx.media.jar",
         "/home/efanfitriyan/Downloads/javafx-sdk-17.0.1/lib/javafx.swing.jar",
         "/home/efanfitriyan/Downloads/javafx-sdk-17.0.1/lib/javafx.web.jar",
-        "/home/efanfitriyan/Downloads/javafx-sdk-17.0.1/lib/javafx-swt.jar"
+        "/home/efanfitriyan/Downloads/javafx-sdk-17.0.1/lib/javafx-swt.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx.base.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx.controls.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx.fxml.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx.graphics.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx.media.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx.swing.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx.web.jar",
+        "c:\\JavaFX\\javafx-sdk-17.0.1\\lib\\javafx-swt.jar",
+        "c:\\Program Files\\mysql-connector-java-8.0.27\\mysql-connector-java-8.0.27.jar"
     ]
 }

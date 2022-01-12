@@ -13,16 +13,26 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Label layoutX="199.0" layoutY="77.0" text="ENTER AMOUNT">
+      <Label layoutX="203.0" layoutY="66.0" text="ENTER AMOUNT">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <TextField fx:id="withdrawAmountField" layoutX="169.0" layoutY="161.0" promptText="0">
+      <TextField fx:id="withdrawAmountField" layoutX="169.0" layoutY="172.0" promptText="0">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToMainmenu" text="back" />
+      <Label layoutX="169.0" layoutY="118.0" prefHeight="36.0" prefWidth="119.0" text="Your money :">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="moneyLeftLabel" layoutX="288.0" layoutY="122.0" prefHeight="17.0" prefWidth="119.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

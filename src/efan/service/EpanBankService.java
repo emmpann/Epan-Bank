@@ -2,7 +2,7 @@ package efan.service;
 
 public interface EpanBankService {
     
-    void addMoney();
+    void addMoney(String username);
 
     void removeMoney();
 
