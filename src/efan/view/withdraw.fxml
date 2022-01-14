@@ -34,5 +34,6 @@
             <Font size="19.0" />
          </font>
       </Label>
+      <Label fx:id="alertWrongInputLabel" layoutX="169.0" layoutY="216.0" prefHeight="17.0" prefWidth="249.0" textFill="#ff3d3d" />
    </children>
 </AnchorPane>

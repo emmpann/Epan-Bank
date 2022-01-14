@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch UserSessionTest",
+            "request": "launch",
+            "mainClass": "efan.test.UserSession.UserSessionTest",
+            "projectName": "Epan-Bank_2bb18b64"
+        },
+        {
+            "type": "java",
+            "name": "Launch EpanBankServiceImplTest",
+            "request": "launch",
+            "mainClass": "efan.test.service.EpanBankServiceImplTest",
+            "projectName": "Epan-Bank_2bb18b64"
+        },
+        {
+            "type": "java",
             "name": "Launch EpanBankRepositoryImplTest",
             "request": "launch",
             "mainClass": "efan.test.repository.EpanBankRepositoryImplTest",

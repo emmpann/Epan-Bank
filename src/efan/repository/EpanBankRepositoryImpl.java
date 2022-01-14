@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import efan.DBUtils;
+import efan.session.UserSession;
 
 public class EpanBankRepositoryImpl implements EpanBankRepository{
 
@@ -25,7 +26,7 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     String username;
 
     @Override
-    public void add(String username) {
+    public void addAccount(String username) {
 
         this.username = username;
 
@@ -44,16 +45,51 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     }
 
     @Override
-    public void remove() {
-        
+    public void addMoney() {
+        try {
+            conn = DBUtils.getConnection();
+            sql = "UPDATE users SET money = money + ? WHERE username=?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, UserSession.getAmountOfMoneyAdded());
+            ps.setString(2, UserSession.getUsername());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("terjadi eror : " + e);
+        }
     }
 
     @Override
-    public void update() {
-        
-        
-    }
+    public void removeMoney() {
+        try {
+            conn = DBUtils.getConnection();
+            sql = "UPDATE users SET money = money - ? WHERE username=?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, UserSession.getAmountOfMoneyWithdraw());
+            ps.setString(2, UserSession.getUsername());
+            ps.executeUpdate();
 
+        } catch (Exception e) {
+            System.out.println("terjadi eror : " + e);
+        }
+    }
+    
+
+    @Override
+    public void update() {
+        try {
+            conn = DBUtils.getConnection();
+            sql = "UPDATE users SET money = money + ? WHERE username=?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, UserSession.getMoney());
+            ps.setString(2, UserSession.getUsername());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("terjadi eror : " + e);
+        }
+    }
+    
     @Override
     public boolean checkUser(String username) {
         
@@ -61,9 +97,10 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
             conn = DBUtils.getConnection();
             ps = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
             ps.setString(1, username);
-            result = ps.execute();
+            //result = ps.execute();
+            rs = ps.executeQuery();
 
-            if(result){
+            if(rs.next()){
                 return true;
             }
 
@@ -71,5 +108,27 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * to know how much money is there in account
+     */
+    @Override
+    public int getMoney() {
+        try {
+            conn = DBUtils.getConnection();
+            sql = "SELECT money FROM users WHERE username = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, UserSession.getUsername());
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                UserSession.setMoney(rs.getInt("money"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("terjadi eror : " + e);   
+        }
+        return 0;
     }
 }

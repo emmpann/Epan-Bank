@@ -8,12 +8,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="efan.controller.MainController">
    <children>
-      <Button layoutX="265.0" layoutY="207.0" mnemonicParsing="false" onAction="#showMainmenu" text="LOGIN">
+      <Button fx:id="loginButton" layoutX="180.0" layoutY="185.0" mnemonicParsing="false" onAction="#showMainmenu" text="LOGIN">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="228.0" layoutY="82.0" text="EPAN BANK">
+      <Label alignment="CENTER" layoutX="2.0" layoutY="51.0" prefHeight="36.0" prefWidth="600.0" text="EPAN BANK">
          <font>
             <Font size="25.0" />
          </font>
@@ -23,6 +23,13 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="usernameTextField" layoutX="180.0" layoutY="147.0" prefHeight="25.0" prefWidth="234.0" promptText="masukkan nama" />
+      <TextField fx:id="usernameTextField" layoutX="180.0" layoutY="147.0" prefHeight="25.0" prefWidth="245.0" promptText="enter your username" />
+      <Label layoutX="272.0" layoutY="217.0" text="don't have an account yet?" />
+      <Button layoutX="262.0" layoutY="185.0" mnemonicParsing="false" onAction="#showRegister" prefHeight="30.0" prefWidth="164.0" text="CREATE ACCOUNT">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="wrongUsernameAlertLabel" layoutX="162.0" layoutY="217.0" prefHeight="17.0" prefWidth="95.0" textFill="#ff3d3d" />
    </children>
 </AnchorPane>
