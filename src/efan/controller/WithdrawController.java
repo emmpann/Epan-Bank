@@ -3,11 +3,9 @@ package efan.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import efan.DBUtils;
 import efan.repository.EpanBankRepository;
 import efan.repository.EpanBankRepositoryImpl;
-import efan.service.EpanBankService;
-import efan.service.EpanBankServiceImpl;
-import efan.session.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,16 +27,22 @@ public class WithdrawController implements Initializable {
 
     @FXML
     private TextField withdrawAmountField;
-
+    
     private int moneyWithdrawn;
-
+    
     private Stage stage;
-
+    
     private Scene scene;
-
+    
     private Parent root;
+    
+    private int moneyLeft = 0;
+    
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
 
-    private int moneyLeft = UserSession.getMoney();
+        moneyLeftLabel.setText(String.valueOf(moneyLeft));
+    }
 
     public void backToMainmenu(ActionEvent event) {
         try {
@@ -55,32 +59,38 @@ public class WithdrawController implements Initializable {
 
     public void withdrawMoney() {
         
-        EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl();
-        EpanBankService epanBankService = new EpanBankServiceImpl(epanBankRepository);
-        if(!epanBankService.isEmptyTextField(withdrawAmountField.getText())){
+        DBUtils resource = new DBUtils();
+        EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl(resource);
+
+        // if(!epanBankService.isEmptyTextField(withdrawAmountField.getText())){
             
-            /**
-             * convert string to number and checking the input
-             */
-            try {
-                moneyWithdrawn = Integer.parseInt(withdrawAmountField.getText());
-                UserSession.setAmountOfMoneyWithdraw(moneyWithdrawn);
-                epanBankService.withdrawMoney();
-                alertWrongInputLabel.setText("");
-                withdrawAmountField.setText("");
-            } catch (NumberFormatException e) {
-                alertWrongInputLabel.setText("please enter the amount (number)");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            alertWrongInputLabel.setText("please enter the amount");
-        }
+        //     /**
+        //      * convert string to number and checking the input
+        //      */
+        //     try {
+        //         moneyWithdrawn = Integer.parseInt(withdrawAmountField.getText());
+
+        //         //serSession.setAmountOfMoneyWithdraw(moneyWithdrawn);
+
+        //         epanBankService.withdrawMoney();
+
+        //         // Refresh if button is active
+        //         epanBankService.getMoneyStatus();
+
+        //         moneyLeft = 0;//UserSession.getMoney();
+
+        //         moneyLeftLabel.setText(String.valueOf(moneyLeft));
+
+        //         alertWrongInputLabel.setText("");
+        //         withdrawAmountField.setText("");
+        //     } catch (NumberFormatException e) {
+        //         alertWrongInputLabel.setText("please enter the amount (number)");
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //     }
+        // } else {
+        //     alertWrongInputLabel.setText("please enter the amount");
+        // }
     }
 
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-
-        moneyLeftLabel.setText(String.valueOf(moneyLeft));
-    }
 }

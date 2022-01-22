@@ -1,10 +1,8 @@
 package efan.controller;
 
+import efan.DBUtils;
 import efan.repository.EpanBankRepository;
 import efan.repository.EpanBankRepositoryImpl;
-import efan.service.EpanBankService;
-import efan.service.EpanBankServiceImpl;
-import efan.session.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,23 +44,23 @@ public class DepositController {
     }
 
     public void depositMoney(){
-        EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl();
-        EpanBankService epanBankService = new EpanBankServiceImpl(epanBankRepository);
+        DBUtils resource = new DBUtils();
+        EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl(resource);
 
-        if(!epanBankService.isEmptyTextField(depositMoneyField.getText())){
-            try {
-                moneyDeposited = Integer.parseInt(depositMoneyField.getText());
-                UserSession.setAmountOfMoneyAdded(moneyDeposited);
-                epanBankService.depositMoney();
-                alertWrongInputLabel.setText("");
-                depositMoneyField.setText("");
-            } catch (NumberFormatException e) {
-                alertWrongInputLabel.setText("please enter the amount (number)");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            alertWrongInputLabel.setText("please enter the amoung");
-        }
+        // if(!epanBankService.isEmptyTextField(depositMoneyField.getText())){
+        //     try {
+        //         moneyDeposited = Integer.parseInt(depositMoneyField.getText());
+        //         //UserSession.setAmountOfMoneyAdded(moneyDeposited);
+        //         epanBankService.depositMoney();
+        //         alertWrongInputLabel.setText("");
+        //         depositMoneyField.setText("");
+        //     } catch (NumberFormatException e) {
+        //         alertWrongInputLabel.setText("please enter the amount (number)");
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //     }
+        // } else {
+        //     alertWrongInputLabel.setText("please enter the amoung");
+        // }
     }
 }

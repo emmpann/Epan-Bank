@@ -23,7 +23,7 @@
             <Font size="20.0" />
          </font>
       </TextField>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToMainmenu" text="back" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#backToMainmenu" text="back" />
       <Label layoutX="169.0" layoutY="118.0" prefHeight="36.0" prefWidth="119.0" text="Your money :">
          <font>
             <Font size="19.0" />

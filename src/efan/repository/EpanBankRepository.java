@@ -1,8 +1,10 @@
 package efan.repository;
 
+import efan.model.User;
+
 public interface EpanBankRepository {
     
-    void addAccount(String username);
+    boolean addAccount(User newUser);
     
     void addMoney();
 
@@ -12,6 +14,12 @@ public interface EpanBankRepository {
 
     int getMoney();
 
-    // mengecek apakah ada usernamenya di database
-    boolean checkUser(String username);
+    // mengecek apakah ada accountnya di database
+
+    boolean loginAccount(String username, String password);
+
+    boolean availableAccount(User newUser);
+
+    //controlcheck
+
 }

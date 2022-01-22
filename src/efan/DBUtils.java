@@ -7,11 +7,11 @@ import java.sql.SQLException;
 
 public class DBUtils {
 
-    private static String url = "jdbc:mysql://localhost/epanbank";
-    private static String username = "root";
-    private static String password = "pantek";
+    private String url = "jdbc:mysql://localhost/epanbank";
+    private String username = "root";
+    private String password = "pantek";
 
-    public static void createDatabase(){
+    public void createDatabase(){
         String sql = "buat database bank";
 
         try (Connection con = DriverManager.getConnection(url, username, password)){
@@ -23,7 +23,7 @@ public class DBUtils {
         }
     }
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, username, password);
     }
 }

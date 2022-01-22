@@ -24,7 +24,7 @@
             <Font size="20.0" />
          </font>
       </TextField>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToMainmenu" text="back" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#backToMainmenu" text="back" />
       <Label fx:id="alertWrongInputLabel" layoutX="170.0" layoutY="205.0" prefHeight="17.0" prefWidth="249.0" textFill="#ff3d3d" />
    </children>
 </AnchorPane>

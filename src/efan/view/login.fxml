@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="efan.controller.LoginController">
+   <children>
+      <Pane layoutX="417.0" prefHeight="504.0" prefWidth="393.0" styleClass="loginRightPane" stylesheets="@css/epanBank.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="417.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="111.0" layoutY="473.0" text="don't have an account yet?" textFill="#5b5b5b" />
+            <Button layoutX="38.0" layoutY="431.0" mnemonicParsing="false" onAction="#showRegister" prefHeight="36.0" prefWidth="289.0" styleClass="button1" stylesheets="@css/epanBank.css" text="Create Account" textFill="#b5af03">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label fx:id="loginFailLabel" layoutX="42.0" layoutY="351.0" prefHeight="17.0" prefWidth="245.0" textFill="#ff3d3d" />
+            <Button fx:id="loginButton" layoutX="42.0" layoutY="307.0" mnemonicParsing="false" onAction="#login" prefHeight="36.0" prefWidth="84.0" stylesheets="@css/epanBank.css" text="Sign In" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label layoutX="42.0" layoutY="107.0" text="Sign In" textFill="#5b5b5b">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" layoutX="38.0" layoutY="159.0" prefHeight="36.0" prefWidth="289.0" spacing="8.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #575757;">
+               <children>
+                  <ImageView fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asset/user_33px.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="usernameTextField" prefHeight="35.0" prefWidth="267.0" promptText="Username" styleClass="loginField" stylesheets="@css/epanBank.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="38.0" layoutY="234.0" prefHeight="36.0" prefWidth="289.0" spacing="8.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #575757;">
+               <children>
+                  <ImageView fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../asset/lock_33px.png" />
+                     </image>
+                  </ImageView>
+                  <PasswordField fx:id="passwordField" onAction="#login" prefHeight="35.0" prefWidth="266.0" promptText="Password" styleClass="loginField" stylesheets="@css/epanBank.css" />
+               </children>
+            </HBox>
+            <Label layoutX="238.0" layoutY="325.0" text="Forgot password ?" textFill="#5b5b5b" />
+         </children>
+      </Pane>
+      <Pane prefHeight="504.0" prefWidth="417.0" styleClass="loginLeftPane" stylesheets="@css/epanBank.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" layoutY="252.0" prefHeight="36.0" prefWidth="417.0" text="EPAN BANK" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="27.0" />
+               </font>
+            </Label>
+            <Label layoutX="73.0" layoutY="291.0" text="Mudahkan transaksimu bersama kami" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="15.0" />
+               </font></Label>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="124.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../asset/us_dollar_200px.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <HBox prefHeight="27.0" prefWidth="809.0" spacing="8.0" style="-fx-background-color: E9E9E9;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="769.0" text="Epanbank" textFill="#575757">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="btnMinimize" fitHeight="17.0" fitWidth="41.0" onMouseClicked="#mouseHandler" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../asset/subtract_26px.png" />
+               </image>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fx:id="btnClose" fitHeight="27.0" fitWidth="17.0" onMouseClicked="#mouseHandler" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../asset/multiply_26px.png" />
+               </image>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+   </children>
+</AnchorPane>

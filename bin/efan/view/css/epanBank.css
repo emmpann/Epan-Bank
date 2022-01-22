@@ -1,0 +1,42 @@
+.button
+{
+    -fx-background-color :  #B5AF03;
+    -fx-background-radius : 5;
+}
+.button:hover
+{
+    -fx-background-color : #CDC957;
+}
+.button:pressed
+{
+    -fx-background-color : #A39E03;
+}
+
+.button1
+{
+    -fx-background-color :  #E6E4AB;
+    -fx-background-radius : 5;
+}
+.button1:hover
+{
+    -fx-background-color : #EEEDC7;
+}
+.button1:pressed
+{
+    -fx-background-color : #D0CD62;
+}
+
+.loginLeftPane
+{
+    -fx-background-color :  linear-gradient(to right top, #b5af03, #c7c003, #d9d102, #ece201, #fff400);
+}
+.loginRightPane
+{
+    -fx-backgroud-color : white;
+}
+
+.loginField
+{
+    -fx-background-color : transparent;
+    -fx-background-border : 1;
+}
