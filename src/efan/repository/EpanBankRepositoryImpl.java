@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import efan.DBUtils;
+import efan.model.Account;
 import efan.model.User;
 
 public class EpanBankRepositoryImpl implements EpanBankRepository{
@@ -147,9 +146,9 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     // }
     
     @Override
-    public boolean loginAccount(String username, String password) {
+    public boolean loginCustomer(String username, String password) {
         
-        String sql = "SELECT username, password, email FROM users WHERE username = ? AND password = ?";
+        String sql = "SELECT username, password, email, id FROM users WHERE username = ? AND password = ?";
         try {
             Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -159,7 +158,7 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
-                new User(rs.getString("username"), rs.getString("password"), rs.getString("email")).login();
+                new User(rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getInt("id")).login();
                 return true;
             }
 
@@ -170,7 +169,7 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     }
 
     @Override
-    public boolean availableAccount(User newUser){
+    public boolean isAvailableCustomer(User newUser){
         
         String sql = "SELECT username, email FROM users WHERE username = ? OR email = ?";
         try {
@@ -192,9 +191,9 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     }
 
     @Override
-    public boolean addAccount(User newUser) {
+    public boolean addCustomer(User newUser) {
 
-        if(!availableAccount(newUser)){
+        if(!isAvailableCustomer(newUser)){
 
             // Add to database
             String sql = "INSERT INTO users (username, password, email) VALUE (?, ?, ?)";
@@ -216,24 +215,72 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
         return false;
     }
 
+    
+    @Override
+    public boolean isAvailableAccount() {
+        System.out.println("memanggil isavailableaccount");
+        User customer = User.getUserInstance();
+        String sql = "SELECT fullName, address, accountNumber, pin, balance, userId FROM accounts WHERE userId = ?";
+        try {
+            Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, customer.getId());
+            System.out.println("id : " + customer.getId());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                new Account(rs.getString("fullName"), rs.getString("address"), rs.getInt("pin"), rs.getString("accountNumber"), rs.getInt("balance"), rs.getInt("userId")).takeAccount();
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println("terdapat error di repository");
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean openAccount(Account newAccount){
+
+        String sql = "INSERT INTO accounts (fullName, address, pin, accountNumber, userId) VALUE (?, ?, ?, ?, ?) ";
+        try {
+            Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, newAccount.getFullName());
+            ps.setString(2, newAccount.getAddress());
+            ps.setInt(3, newAccount.getPin());
+            ps.setString(4, newAccount.getAccountNumber());
+            ps.setInt(5, newAccount.getUserId());
+
+            if(!ps.execute()){
+                return true;
+            }
+            conn.close();
+        } catch (Exception e) {
+            System.out.println("terdapat error di repository");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public void addMoney() {
         // TODO Auto-generated method stub
         
     }
-
+    
     @Override
     public void removeMoney() {
         // TODO Auto-generated method stub
         
     }
-
+    
     @Override
     public void update() {
         // TODO Auto-generated method stub
         
     }
-
+    
     @Override
     public int getMoney() {
         // TODO Auto-generated method stub

@@ -66,7 +66,7 @@ public class LoginController implements Initializable{
         password = passwordField.getText();
 
         if(!username.isEmpty() && !password.isEmpty()){
-            if(epanBankRepository.loginAccount(username, password)){
+            if(epanBankRepository.loginCustomer(username, password)){
                 ScreenPageController.goToMainmenu(event);
             } else {
                 loginFailLabel.setText("login failed");

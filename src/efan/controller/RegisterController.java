@@ -60,8 +60,8 @@ public class RegisterController {
         if(!newUsernameTextField.getText().isEmpty()){
             if(!passwordField.getText().isEmpty()){
                 if(password.equals(confirmPassword)){
-                    if(!epanBankRepository.availableAccount(newUser)){
-                        epanBankRepository.addAccount(newUser);
+                    if(!epanBankRepository.isAvailableCustomer(newUser)){
+                        epanBankRepository.addCustomer(newUser);
                         ScreenPageController.goToLogin(event);
                     } else {
                         if(newUser.getUsername().equals(newUsernameTextField.getText())){

@@ -1,5 +1,7 @@
 package efan.model;
 
+import javafx.scene.image.Image;
+
 public class User {
     
     private String username;
@@ -8,6 +10,8 @@ public class User {
 
     private String email;
 
+    private Image profilePicture;
+
     private int money;
 
     private int amountOfMoneyAdded;
@@ -15,6 +19,8 @@ public class User {
     private int amountOfMoneyWithdraw;
 
     private static User userInstance;
+
+    private int id;
 
     public static void print(){
         System.out.println(userInstance.getUsername());
@@ -34,6 +40,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String username, String password, String email, int id){
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.id = id;
     }
 
     public String getUsername() {
@@ -85,4 +98,23 @@ public class User {
     public void setAmountOfMoneyWithdraw(int amountOfMoneyWithdraw) {
         this.amountOfMoneyWithdraw = amountOfMoneyWithdraw;
     }
+
+
+    public Image getProfilePicture() {
+        return this.profilePicture;
+    }
+
+    public void setProfilePicture(Image profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 }

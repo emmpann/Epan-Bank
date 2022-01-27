@@ -1,42 +1,50 @@
-.button
-{
+.button {
     -fx-background-color :  #B5AF03;
     -fx-background-radius : 5;
 }
-.button:hover
-{
+.button:hover {
     -fx-background-color : #CDC957;
 }
-.button:pressed
-{
+.button:pressed {
     -fx-background-color : #A39E03;
 }
 
-.button1
-{
+.button1 {
     -fx-background-color :  #E6E4AB;
     -fx-background-radius : 5;
 }
-.button1:hover
-{
+.button1:hover {
     -fx-background-color : #EEEDC7;
 }
-.button1:pressed
-{
+.button1:pressed {
     -fx-background-color : #D0CD62;
 }
 
-.loginLeftPane
-{
+.loginLeftPane {
     -fx-background-color :  linear-gradient(to right top, #b5af03, #c7c003, #d9d102, #ece201, #fff400);
 }
-.loginRightPane
-{
+.loginRightPane {
     -fx-backgroud-color : white;
 }
 
-.loginField
-{
+.loginField {
     -fx-background-color : transparent;
     -fx-background-border : 1;
+}
+
+.vbox-mainmenu {
+    -fx-background-color : #B5AF03;
+}
+.button-mainmenu {
+    -fx-background-color :  #B5AF03;
+    -fx-background-radius : 5;
+}
+.button-mainmenu:hover {
+    -fx-background-color : #CDC957;
+}
+.button-mainmenu:pressed {
+    -fx-background-color : #A39E03;
+}
+.button-mainmenu:active {
+    -fx-background-color : white;
 }

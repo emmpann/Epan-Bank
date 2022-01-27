@@ -4,27 +4,31 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="efan.controller.DepositController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="555.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="efan.controller.DepositController">
    <children>
-      <Button layoutX="-98.0" layoutY="-10.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="247.0" layoutY="263.0" mnemonicParsing="false" onAction="#depositMoney" text="DEPOST">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-      <Label layoutX="199.0" layoutY="89.0" text="ENTER AMOUNT">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Label>
-      <TextField fx:id="depositMoneyField" layoutX="170.0" layoutY="161.0" promptText="0">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </TextField>
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#backToMainmenu" text="back" />
-      <Label fx:id="alertWrongInputLabel" layoutX="170.0" layoutY="205.0" prefHeight="17.0" prefWidth="249.0" textFill="#ff3d3d" />
+      <Pane prefHeight="504.0" prefWidth="555.0">
+         <children>
+            <Button layoutX="229.0" layoutY="291.0" mnemonicParsing="false" onAction="#depositMoney" text="DEPOSIT">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Label layoutX="185.0" layoutY="168.0" text="ENTER AMOUNT">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <TextField fx:id="depositMoneyField" layoutX="153.0" layoutY="230.0" promptText="0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+            <Button layoutX="29.0" layoutY="451.0" mnemonicParsing="false" onAction="#backToMainmenu" text="back" />
+            <Label fx:id="alertWrongInputLabel" layoutX="153.0" layoutY="274.0" prefHeight="17.0" prefWidth="249.0" textFill="#ff3d3d" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
