@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="efan.controller.TransferController">
+   <children>
+      <Pane prefHeight="504.0" prefWidth="662.0">
+         <children>
+            <Label layoutX="155.0" layoutY="174.0" text="Enter Balance" />
+            <TextField fx:id="balanceField" layoutX="289.0" layoutY="170.0" prefHeight="25.0" prefWidth="219.0" />
+            <TextField fx:id="accountNumberField" layoutX="289.0" layoutY="224.0" prefHeight="25.0" prefWidth="219.0" />
+            <Label layoutX="155.0" layoutY="228.0" text="Enter Account number" />
+            <Button fx:id="transferButton" layoutX="305.0" layoutY="314.0" mnemonicParsing="false" onAction="#transferBtn" stylesheets="@css/epanBank.css" text="Transfer" />
+            <Label layoutX="34.0" layoutY="28.0" text="Transfer Money">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="moneyLeftLabel" alignment="CENTER_RIGHT" layoutX="445.0" layoutY="32.0" prefHeight="28.0" prefWidth="200.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="successTransferAlert" alignment="CENTER" prefHeight="17.0" prefWidth="662.0" textFill="#5df062">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <ProgressIndicator fx:id="loadingIndicator" layoutX="373.0" layoutY="311.0" prefHeight="27.0" prefWidth="25.0" progress="0.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

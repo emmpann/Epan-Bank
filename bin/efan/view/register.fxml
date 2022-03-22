@@ -51,6 +51,11 @@
             <PasswordField fx:id="confirmPasswordField" layoutX="346.0" layoutY="317.0" prefHeight="25.0" prefWidth="258.0" style="-fx-background-radius: 1;" />
             <Label fx:id="passwordErrorLabel" layoutX="346.0" layoutY="288.0" prefHeight="17.0" prefWidth="258.0" textFill="#ff3d3d" />
             <Label fx:id="confirmPasswordErrorLabel" layoutX="346.0" layoutY="344.0" prefHeight="17.0" prefWidth="258.0" textFill="#ff3d3d" />
+            <Label fx:id="succesAlert" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="809.0" textFill="#5df062">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

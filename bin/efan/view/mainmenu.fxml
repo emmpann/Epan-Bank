@@ -27,7 +27,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefWidth="155.0" stylesheets="@css/epanBank.css" text="Transfer" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#showTransfer" prefWidth="155.0" stylesheets="@css/epanBank.css" text="Transfer" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

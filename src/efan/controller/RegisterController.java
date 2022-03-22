@@ -1,6 +1,6 @@
 package efan.controller;
 
-import efan.DBUtils;
+import efan.DB.DatabaseUtil;
 import efan.model.User;
 import efan.repository.EpanBankRepository;
 import efan.repository.EpanBankRepositoryImpl;
@@ -12,10 +12,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class RegisterController {
-    
+
     @FXML
     private Button createAccountButton;
-    
     
     @FXML
     private TextField newUsernameTextField;
@@ -42,6 +41,9 @@ public class RegisterController {
     private Label confirmPasswordErrorLabel;
 
     @FXML
+    private Label succesAlert;
+
+    @FXML
     public void createAccount(ActionEvent event) {
 
         confirmPasswordErrorLabel.setText("");
@@ -49,8 +51,8 @@ public class RegisterController {
         usernameNotAvailableLabel.setText("");
         emailNotAvailableLabel.setText("");
 
-        DBUtils resource = new DBUtils();
-        EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl(resource);
+        DatabaseUtil dataSource = DatabaseUtil.getInstance();
+        EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl(dataSource);
 
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
@@ -62,13 +64,15 @@ public class RegisterController {
                 if(password.equals(confirmPassword)){
                     if(!epanBankRepository.isAvailableCustomer(newUser)){
                         epanBankRepository.addCustomer(newUser);
-                        ScreenPageController.goToLogin(event);
+                        clearField();
+                        succesAlert.setText("Create account is succes");
                     } else {
                         if(newUser.getUsername().equals(newUsernameTextField.getText())){
                             usernameNotAvailableLabel.setText("Username is not available");
                         } else if (newUser.getEmail().equals(emailTextField.getText())){
                             emailNotAvailableLabel.setText("Email is not Available");
                         }
+                        newUser = null;
                     }
                 } else {
                     confirmPasswordErrorLabel.setText("error confirm password");
@@ -82,8 +86,13 @@ public class RegisterController {
     }
 
     @FXML
-    public void backToMain(ActionEvent event){
+    public void backToMain(ActionEvent event){ScreenPageController.goToLogin(event);}
 
-        ScreenPageController.goToLogin(event);
+    public void clearField() {
+
+        newUsernameTextField.setText("");
+        passwordField.setText("");
+        confirmPasswordField.setText("");
+        emailTextField.setText("");
     }
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -53,7 +54,8 @@
                   <PasswordField fx:id="passwordField" onAction="#login" prefHeight="35.0" prefWidth="266.0" promptText="Password" styleClass="loginField" stylesheets="@css/epanBank.css" />
                </children>
             </HBox>
-            <Label layoutX="238.0" layoutY="325.0" text="Forgot password ?" textFill="#5b5b5b" />
+            <Label fx:id="forgotPasswordBtn" layoutX="238.0" layoutY="325.0" onMouseClicked="#mouseHandler" text="Forgot password ?" textFill="#5b5b5b" />
+            <ProgressIndicator fx:id="loadingIndicator" layoutX="140.0" layoutY="312.0" prefHeight="27.0" prefWidth="25.0" progress="0.0" />
          </children>
       </Pane>
       <Pane prefHeight="504.0" prefWidth="417.0" styleClass="loginLeftPane" stylesheets="@css/epanBank.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">

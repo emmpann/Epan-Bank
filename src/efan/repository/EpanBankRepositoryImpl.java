@@ -4,162 +4,135 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import efan.DBUtils;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+
+import efan.DB.DBTask;
+import efan.DB.DatabaseUtil;
 import efan.model.Account;
 import efan.model.User;
 
 public class EpanBankRepositoryImpl implements EpanBankRepository{
 
-    private DBUtils dataSource;
+    private static CountDownLatch lock1 = new CountDownLatch(1);
+    private static CountDownLatch lock2 = new CountDownLatch(1);
 
-    public EpanBankRepositoryImpl(DBUtils dataSource){
+    public static void resetLock() {
+        lock1 = new CountDownLatch(1);
+        lock2 = new CountDownLatch(1);
+    }
+
+    public static void resetLock1() {
+        lock1 = new CountDownLatch(1);
+    }
+
+    public static CountDownLatch getLock1() {
+        return lock1;
+    }
+
+    public static CountDownLatch getLock2() {
+        return lock2;
+    }
+    
+    static private ExecutorService executorService;
+
+    public static void setExecutorService(ExecutorService e) {
+        executorService = e;
+    }
+
+    public static ExecutorService getExecutorServiceInstace() {
+        return executorService;
+    }
+
+    private DatabaseUtil dataSource;
+
+    public EpanBankRepositoryImpl(DatabaseUtil dataSource){
         this.dataSource = dataSource;
     }
 
     /**
-     * make new account
+     * BACKGROUND TASK
      */
-    // @Override
-    // public void addAccount(String username) {
 
-    //     this.username = username;
+    public class LoginCustomerTask extends DBTask<Boolean> {
 
-    //     try {
-    //         conn = dataSource.getConnection();
-    //         ps = conn.prepareStatement("INSERT INTO users (username, money) VALUE (?, ?)");
-    //         ps.setString(1, username);
-    //         ps.setInt(2, 20);
-
-    //         ps.execute();
-
-
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    // @Override
-    // public void addMoney() {
-    //     try {
-    //         conn = dataSource.getConnection();
-    //         sql = "UPDATE users SET money = money + ? WHERE username=?";
-    //         ps = conn.prepareStatement(sql);
-    //         ps.setInt(1, UserSession.getAmountOfMoneyAdded());
-    //         ps.setString(2, UserSession.getUsername());
-    //         ps.executeUpdate();
-
-    //     } catch (Exception e) {
-    //         System.out.println("terjadi eror : " + e);
-    //     }
-    // }
-
-    // @Override
-    // public void removeMoney() {
-    //     try {
-    //         conn = dataSource.getConnection();
-    //         sql = "UPDATE users SET money = money - ? WHERE username=?";
-    //         ps = conn.prepareStatement(sql);
-    //         ps.setInt(1, UserSession.getAmountOfMoneyWithdraw());
-    //         ps.setString(2, UserSession.getUsername());
-    //         ps.executeUpdate();
-
-    //     } catch (Exception e) {
-    //         System.out.println("terjadi eror : " + e);
-    //     }
-    // }
-    
-
-    // @Override
-    // public void update() {
-    //     try {
-    //         conn = DBUtils.getConnection();
-    //         sql = "UPDATE users SET money = money + ? WHERE username=?";
-    //         ps = conn.prepareStatement(sql);
-    //         ps.setInt(1, UserSession.getMoney());
-    //         ps.setString(2, UserSession.getUsername());
-    //         ps.executeUpdate();
-
-    //     } catch (Exception e) {
-    //         System.out.println("terjadi eror : " + e);
-    //     }
-    // }
-    
-    // /**
-    //  * to know how much money is there in account
-    //  */
-    // @Override
-    // public int getMoney() {
-    //     try {
-    //         conn = DBUtils.getConnection();
-    //         sql = "SELECT money FROM users WHERE username = ?";
-    //         ps = conn.prepareStatement(sql);
-    //         ps.setString(1, UserSession.getUsername());
-    //         rs = ps.executeQuery();
-            
-    //         if(rs.next()){
-    //             UserSession.setMoney(rs.getInt("money"));
-    //         }
-
-    //     } catch (Exception e) {
-    //         System.out.println("terjadi eror : " + e);   
-    //     }
-    //     return 0;
-    // }
-    
-    // @Override
-    // public boolean usernameCheck() {
+        final String username, password;
         
-    //     try {
-    //         conn = DBUtils.getConnection();
-    //         ps = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
-    //         ps.setString(1, UserSession.getUsername());
-    //         //result = ps.execute();
-    //         rs = ps.executeQuery();
-    
-    //         if(rs.next()){
-    //             return true;
-    //         }
-    
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
+        public LoginCustomerTask(final String username, final String password) {
+            this.username = username;
+            this.password = password;
+        }
 
-    // @Override
-    // public boolean passwordCheck() {
-    //     try {
-    //         conn = DBUtils.getConnection();
-    //         ps = conn.prepareStatement("SELECT * FROM users WHERE password = ?");
-    //         ps.setString(1, UserSession.getPassword());
-    //         //result = ps.execute();
-    //         rs = ps.executeQuery();
+        @Override
+        protected Boolean call() throws Exception {
+            return loginCustomer(username, password);
+        }
+    }
     
-    //         if(rs.next()){
-    //             return true;
-    //         }
+    public class IsAvailableAccountTask extends DBTask<Boolean> {
+        
+        @Override
+        protected Boolean call() throws Exception {
+            return isAvailableAccount();
+        }
+    }
     
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
-    
+    public class AddMoneyTask extends DBTask<Boolean> {
+
+        final private int  balance;
+        final private Account account;
+
+        public AddMoneyTask(int balance, Account account) {this.balance = balance; this.account = account;}
+
+        @Override
+        protected Boolean call() throws Exception {
+            return addMoney(balance, account);
+        }
+    }
+
+    public class RemoveMoneyTask extends DBTask<Boolean> {
+
+        final private int  balance;
+        final private Account account;
+
+        public RemoveMoneyTask(int balance, Account account) {this.balance = balance; this.account = account;} 
+
+        @Override
+        protected Boolean call() throws Exception {
+            return removeMoney(balance, account);
+        }
+    }
+
+    public class GetBalanceTask extends DBTask<Integer> {
+        @Override
+        protected Integer call() throws Exception {return getBalance();}
+    }
+
+    /**
+     * BUSSINES LOGIC QUERING TO DATABASE
+     */
+
     @Override
     public boolean loginCustomer(String username, String password) {
-        
+
+        // have to fix the bussines logic, problems: the username and password are ignorecase, its have to sensitive case
         String sql = "SELECT username, password, email, id FROM users WHERE username = ? AND password = ?";
-        try {
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);) {
+
             ps.setString(1, username);
             ps.setString(2, password);
             
             ResultSet rs = ps.executeQuery();
-
+            
             if(rs.next()){
                 new User(rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getInt("id")).login();
+                lock2.countDown();
+                
+                lock1.await();
                 return true;
+            } else { 
+                lock2.countDown();
             }
 
         } catch (Exception e) {
@@ -185,6 +158,7 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
             }
 
         } catch (Exception e) {
+            System.out.println("error isAvailableCustomer");
             e.printStackTrace();
         }
         return false;
@@ -214,26 +188,29 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
         }
         return false;
     }
-
     
     @Override
     public boolean isAvailableAccount() {
-        System.out.println("memanggil isavailableaccount");
-        User customer = User.getUserInstance();
-        String sql = "SELECT fullName, address, accountNumber, pin, balance, userId FROM accounts WHERE userId = ?";
-        try {
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+
+        String sql = "SELECT id, fullName, address, accountNumber, pin, balance, userId FROM accounts WHERE userId = ?";
+        try(Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);) {
+            lock2.await();
+            User customer = User.getUserInstance();
+            
             ps.setInt(1, customer.getId());
+
             System.out.println("id : " + customer.getId());
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                new Account(rs.getString("fullName"), rs.getString("address"), rs.getInt("pin"), rs.getString("accountNumber"), rs.getInt("balance"), rs.getInt("userId")).takeAccount();
+                // Taking account
+                new Account(rs.getInt("id"), rs.getString("fullName"), rs.getString("address"), rs.getInt("pin"), rs.getString("accountNumber"), rs.getInt("balance"), rs.getInt("userId")).takeAccount();
+                lock1.countDown();
                 return true;
             }
 
         } catch (Exception e) {
-            System.out.println("terdapat error di repository");
+            System.out.println("terdapat error di repository:isavailable account");
             e.printStackTrace();
         }
         return false;
@@ -243,9 +220,9 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     public boolean openAccount(Account newAccount){
 
         String sql = "INSERT INTO accounts (fullName, address, pin, accountNumber, userId) VALUE (?, ?, ?, ?, ?) ";
-        try {
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try(Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);) {
+
             ps.setString(1, newAccount.getFullName());
             ps.setString(2, newAccount.getAddress());
             ps.setInt(3, newAccount.getPin());
@@ -264,17 +241,59 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     }
 
     @Override
-    public void addMoney() {
-        // TODO Auto-generated method stub
-        
+    public boolean addMoney(int balanceAdded, Account account) {
+
+        String sql = "UPDATE accounts SET balance = balance + ? WHERE accountNumber = ?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);) {
+            
+            ps.setInt(1, balanceAdded);
+            ps.setString(2, account.getAccountNumber());
+
+            ps.executeUpdate();
+            lock1.countDown();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
     @Override
-    public void removeMoney() {
-        // TODO Auto-generated method stub
-        
+    public boolean removeMoney(int balanceRemoved, Account account) {
+
+        String sql = "UPDATE accounts SET balance = balance - ? WHERE id = ?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);) {
+            
+            ps.setInt(1, balanceRemoved);
+            ps.setInt(2, account.getId());
+
+            ps.executeUpdate();
+            lock1.countDown();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
+    @Override
+    public boolean transferMoney(int money, Account sender, Account target) {
+        // TODO Auto-generated method stub
+        // 1. add money to user id target
+        // 2. remove money from user id sender
+        
+        try {
+            removeMoney(money, sender);
+            addMoney(money, target);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public void update() {
         // TODO Auto-generated method stub
@@ -282,8 +301,51 @@ public class EpanBankRepositoryImpl implements EpanBankRepository{
     }
     
     @Override
-    public int getMoney() {
-        // TODO Auto-generated method stub
+    public int getBalance() {
+        String sql = "SELECT balance FROM accounts WHERE id = ?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);) {
+            
+            lock1.await();
+            ps.setInt(1, Account.getAccountInstance().getId());
+                
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                Account.getAccountInstance().setBalance(rs.getInt("balance"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return 0;
     }
+
+    @Override
+    public Account getAccountInfo(int id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    // @Override
+    // public Account getAccountInfo(int id) {
+    //     // TODO Auto-generated method stub
+    //     String sql = "SELECT id FROM users WHERE username = ? AND password = ?";
+    //     try {
+    //         Connection conn = dataSource.getConnection();
+    //         PreparedStatement ps = conn.prepareStatement(sql);
+    //         ps.setString(1, username);
+    //         ps.setString(2, password);
+            
+    //         ResultSet rs = ps.executeQuery();
+
+    //         if(rs.next()){
+    //             return new User(rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getInt("id")).login();
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+
+    //     return this;
+    // }
+
 }

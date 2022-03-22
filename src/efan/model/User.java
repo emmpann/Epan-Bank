@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 
 public class User {
     
+    private Account account;
+
     private String username;
 
     private String password;
@@ -28,13 +30,11 @@ public class User {
         System.out.println(userInstance.getEmail());
     }
 
-    public void login(){
-        userInstance = this;
-    }
+    public void login(){userInstance = this;}
 
-    public static User getUserInstance(){
-        return userInstance;
-    }
+    public void clearUser(){userInstance = null;}
+
+    public static User getUserInstance(){return userInstance;}
 
     public User(String username, String password, String email){
         this.username = username;
@@ -47,6 +47,14 @@ public class User {
         this.password = password;
         this.email = email;
         this.id = id;
+    }
+
+    public User(String username, String password, String email, int id, Account account){
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.id = id;
+        this.account = account;
     }
 
     public String getUsername() {

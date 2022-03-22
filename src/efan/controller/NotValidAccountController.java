@@ -3,7 +3,6 @@ package efan.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import efan.DBUtils;
 import efan.repository.EpanBankRepository;
 import efan.repository.EpanBankRepositoryImpl;
 import javafx.fxml.FXML;

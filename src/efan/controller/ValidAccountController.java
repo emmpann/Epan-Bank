@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import efan.model.Account;
+import efan.util.CurrencyNumber;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -20,25 +21,20 @@ public class ValidAccountController implements Initializable {
     @FXML
     private Label bankAccountNumber;
 
-    Account myAccount = Account.getAccountInstance();
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Balance
-        String balance = String.valueOf(myAccount.getBalance());
-
         // Account Number
-        String accountNumber = myAccount.getAccountNumber();
+        String accountNumber = Account.getAccountInstance().getAccountNumber();
         String accountNumberFormatted = "";
 
         for (String i: accountNumber.split("(?<=\\G.{" + 4 + "})")) {
             accountNumberFormatted += i + " ";
         }
 
-        bankAccountName.setText(myAccount.getFullName());
+        bankAccountName.setText(Account.getAccountInstance().getFullName());
 
-        balanceLabel.setText("Rp " + balance);
+        balanceLabel.setText(CurrencyNumber.currencyFormat(Account.getAccountInstance().getBalance()));
 
         bankAccountNumber.setText(accountNumberFormatted);
         

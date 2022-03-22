@@ -2,16 +2,17 @@ package efan.controller;
 
 import java.util.Random;
 
-import efan.DBUtils;
+import efan.DB.DatabaseUtil;
 import efan.model.Account;
 import efan.model.User;
 import efan.repository.EpanBankRepository;
 import efan.repository.EpanBankRepositoryImpl;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 public class OpenAccountController {
-    
+
     @FXML
     private TextField addressField;
 
@@ -24,7 +25,8 @@ public class OpenAccountController {
     @FXML
     private TextField pinNumberField;
 
-    public void openAccount(){
+    @FXML
+    public void openAccount(ActionEvent event){
 
         // Generate account number
         Random randNumber = new Random();
@@ -34,17 +36,24 @@ public class OpenAccountController {
             accountNumber += Integer.toString(randNumber.nextInt(10));
         }
 
-        DBUtils dataSource = new DBUtils();
+        DatabaseUtil dataSource = DatabaseUtil.getInstance();
         EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl(dataSource);
 
         User customer = User.getUserInstance();
 
-        // Create instance
+        // Create new account
         Account newAccount = new Account(frontNameField.getText() + " " + lastNameField.getText(), 
         addressField.getText(), Integer.parseInt(pinNumberField.getText()), accountNumber, customer.getId());
         
         epanBankRepository.openAccount(newAccount);
         
+        // Add instance to currently account
+        if(Account.getAccountInstance() == null){
+            // take account
+            epanBankRepository.isAvailableAccount();
+            
+            ScreenPageController.goToMainmenu(event);
+        }
     }
 
 }

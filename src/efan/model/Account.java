@@ -2,6 +2,8 @@ package efan.model;
 
 public class Account {
     
+    private int id;
+
     private String fullName;
 
     private String address;
@@ -16,7 +18,10 @@ public class Account {
 
     private static Account accountInstance;
 
-    public Account(String fullName, String address, int pin, String accountNumber, int balance, int userId){
+    public Account(){};
+
+    public Account(int id, String fullName, String address, int pin, String accountNumber, int balance, int userId){
+        this.id = id;
         this.fullName = fullName;
         this.address = address;
         this.pin = pin;
@@ -33,6 +38,9 @@ public class Account {
         this.userId = userId;
     }
 
+    public void clearAccount(){
+        accountInstance = null;
+    }
 
     public void takeAccount(){
         accountInstance = this;
@@ -41,6 +49,15 @@ public class Account {
     public static Account getAccountInstance(){
         return accountInstance;
     }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public String getFullName() {
         return this.fullName;

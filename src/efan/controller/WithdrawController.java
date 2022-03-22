@@ -2,17 +2,24 @@ package efan.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
 
-import efan.DBUtils;
+import javax.swing.plaf.synth.SynthScrollBarUI;
+
+import efan.DB.DatabaseUtil;
+import efan.model.Account;
 import efan.repository.EpanBankRepository;
 import efan.repository.EpanBankRepositoryImpl;
+import efan.util.CurrencyNumber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -28,6 +35,16 @@ public class WithdrawController implements Initializable {
     @FXML
     private TextField withdrawAmountField;
     
+    @FXML
+    private Label successWithdrawAlert;
+
+    @FXML
+    private Button withdrawButton;
+
+    @FXML
+    private ProgressIndicator loadingIndicator;
+
+
     private int moneyWithdrawn;
     
     private Stage stage;
@@ -41,7 +58,13 @@ public class WithdrawController implements Initializable {
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
 
-        moneyLeftLabel.setText(String.valueOf(moneyLeft));
+        if(!(Account.getAccountInstance() == null)){
+            moneyLeft = Account.getAccountInstance().getBalance();
+            moneyLeftLabel.setText(CurrencyNumber.currencyFormat(moneyLeft));
+            loadingIndicator.setVisible(false);
+        }else {
+            System.out.println("you don't have bank account yet");
+        }
     }
 
     public void backToMainmenu(ActionEvent event) {
@@ -59,38 +82,51 @@ public class WithdrawController implements Initializable {
 
     public void withdrawMoney() {
         
-        DBUtils resource = new DBUtils();
-        EpanBankRepository epanBankRepository = new EpanBankRepositoryImpl(resource);
+        DatabaseUtil dataSource = DatabaseUtil.getInstance();
+        EpanBankRepositoryImpl epanBankRepositoryImpl = new EpanBankRepositoryImpl(dataSource);
 
-        // if(!epanBankService.isEmptyTextField(withdrawAmountField.getText())){
-            
-        //     /**
-        //      * convert string to number and checking the input
-        //      */
-        //     try {
-        //         moneyWithdrawn = Integer.parseInt(withdrawAmountField.getText());
+        ExecutorService executorService = EpanBankRepositoryImpl.getExecutorServiceInstace();
 
-        //         //serSession.setAmountOfMoneyWithdraw(moneyWithdrawn);
+        if(!withdrawAmountField.getText().isEmpty()){
+            try {
 
-        //         epanBankService.withdrawMoney();
+                EpanBankRepositoryImpl.RemoveMoneyTask removeMoneyTask = epanBankRepositoryImpl.new RemoveMoneyTask(Integer.parseInt(withdrawAmountField.getText()), Account.getAccountInstance());
+                EpanBankRepositoryImpl.GetBalanceTask getBalanceTask = epanBankRepositoryImpl.new GetBalanceTask();
 
-        //         // Refresh if button is active
-        //         epanBankService.getMoneyStatus();
+                removeMoneyTask.setOnRunning(t -> {
+                    withdrawButton.disableProperty().bind(removeMoneyTask.runningProperty());
+                    
+                    loadingIndicator.visibleProperty().bind(removeMoneyTask.runningProperty());
+                    
+                    loadingIndicator.progressProperty().bind(removeMoneyTask.progressProperty());
+                });
 
-        //         moneyLeft = 0;//UserSession.getMoney();
+                getBalanceTask.setOnSucceeded(t -> {
+                    if(removeMoneyTask.getValue()){
+                        // Update curent balance amount
+                        successWithdrawAlert.setText("Withdraw is Success");
+                        moneyLeftLabel.setText(CurrencyNumber.currencyFormat(Account.getAccountInstance().getBalance()));
+                        alertWrongInputLabel.setText("");
+                        withdrawAmountField.setText("");
+                    }
+                    EpanBankRepositoryImpl.resetLock1();
+                });
 
-        //         moneyLeftLabel.setText(String.valueOf(moneyLeft));
+                executorService.submit(getBalanceTask);
+                executorService.submit(removeMoneyTask);
 
-        //         alertWrongInputLabel.setText("");
-        //         withdrawAmountField.setText("");
-        //     } catch (NumberFormatException e) {
-        //         alertWrongInputLabel.setText("please enter the amount (number)");
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
-        // } else {
-        //     alertWrongInputLabel.setText("please enter the amount");
-        // }
+            } catch (NumberFormatException e) {
+                alertWrongInputLabel.setText("please enter the amount (number)");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            alertWrongInputLabel.setText("please enter the amount");
+        }
     }
 
+    public void clearField() {
+        alertWrongInputLabel.setText("");
+        withdrawAmountField.setText("");
+    }
 }

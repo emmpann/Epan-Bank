@@ -1,19 +1,26 @@
 package efan.repository;
 
+import efan.DB.DBTask;
 import efan.model.Account;
 import efan.model.User;
 
 public interface EpanBankRepository {
     
+    public static class inner{
+        final int umur = 12;
+    }
+
     boolean addCustomer(User newUser);
     
-    void addMoney();
+    boolean addMoney(int balanceAdded, Account account);
 
-    void removeMoney();
+    boolean removeMoney(int balanceRemoved, Account account);
 
-    void update();
+    boolean transferMoney(int money, Account account, Account a);
 
-    int getMoney();
+    void update(); 
+
+    int getBalance();
 
     // mengecek apakah ada accountnya di database
 
@@ -24,6 +31,8 @@ public interface EpanBankRepository {
     boolean isAvailableAccount();
 
     boolean openAccount(Account newAccount);
+
+    Account getAccountInfo(int id);
 
     //controlcheck
 
